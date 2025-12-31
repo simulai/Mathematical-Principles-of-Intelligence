@@ -32,6 +32,10 @@ Setting the derivative to zero identifies the stationary points: $\dfrac{1-\ln b
 
 Solving this yields the unique critical point: $\ln b=1\Rightarrow b=e\approx2.718$ (2.4).
 
+![Efficiency curve showing maximum at b = e](images/psi_curve.svg)
+
+Figure: Efficiency curve $\Psi(b)=\ln b / b$ with a unique maximum at $b=e\approx2.718$.
+
 ### 2.2 Verification of the Maximum
 
 To confirm that this critical point corresponds to a maximum, we examine the second derivative at $b = e$:
