@@ -137,15 +137,6 @@ $$
 
 where $\tau(u)$ is the tension field. Achieving $\tau(u)=0$ indicates the network's internal geometry is aligned with input structure and conceptual manifold — the functional signature of insight.
 
----
-
-Notes for referees
-
-- The above gives a concise mathematical skeleton. Each equation above can be expanded into full variational derivations (e.g., deriving the cognitive Ricci flow from a loss functional coupling curvature and task loss, or deriving the precise form of $\mu$ via a thermodynamic Legendre transform over symmetry charges).
-- If desired, I can add appendices with formal derivations, explicit variational principles, and suggested experiment designs to test the Zhang Invariant in trained networks.
-
-
-If this matches your intent I will commit the file and push it to the remote; otherwise tell me any adjustments (notation, extra derivations, or appendices) you want before I commit.
 
 
 ### References
@@ -153,3 +144,4 @@ If this matches your intent I will commit the file and push it to the remote; ot
 [1] Laughlin, S. B., de Ruyter van Steveninck, R. R., & Anderson, J. C. (1998). The metabolic cost of neural information. *Nature Neuroscience*, 1(1), 36–41.
 
 [2] Niven, J. E., Anderson, J. C., & Laughlin, S. B. (2007). Fly photoreceptors demonstrate energy-information trade-offs in neural coding. *PLoS Biology*, 5(4), e116.
+
