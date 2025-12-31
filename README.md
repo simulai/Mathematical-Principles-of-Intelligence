@@ -56,3 +56,15 @@ A topological charge defined over cycles $\Gamma$ in the cognitive connection bu
 ---
 
 ## 📁 Repository Structure
+
+---
+
+## ⭐ 收藏统计
+
+如果你觉得本项目有帮助，欢迎点个星（收藏）：
+
+[![GitHub Stars](https://img.shields.io/github/stars/simulai/Mathematical-Principles-of-Intelligence?style=social)](https://github.com/simulai/Mathematical-Principles-of-Intelligence/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/simulai/Mathematical-Principles-of-Intelligence?style=social)](https://github.com/simulai/Mathematical-Principles-of-Intelligence/network/members)
+[![GitHub Watchers](https://img.shields.io/github/watchers/simulai/Mathematical-Principles-of-Intelligence?style=social)](https://github.com/simulai/Mathematical-Principles-of-Intelligence/watchers)
+
+可选：访问 https://shields.io/ 可定制更多徽章样式与统计（issues、license 等）。
