@@ -138,7 +138,7 @@ $$
 Equivalently, the map $u$ is harmonic (energy-minimizing):
 
 $$
-	au(u) = \operatorname{tr}_g \nabla du = 0,
+	au(u) = \mathrm{tr}_g\,(\nabla du) = 0.
 $$
 
 where $\tau(u)$ is the tension field. Achieving $\tau(u) = 0$ indicates the network's internal geometry is aligned with input structure and conceptual manifold — the functional signature of **insight**.
