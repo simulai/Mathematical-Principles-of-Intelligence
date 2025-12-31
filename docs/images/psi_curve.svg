@@ -67,12 +67,12 @@
     <text class="label" x="190" y="18">(b = e, ψ = 1/e ≈ 0.368)</text>
 
     <!-- Axis titles -->
-    <text class="label" x="240" y="340">Branching factor $b$</text>
-    <text class="label" transform="translate(-58,150) rotate(-90)">Efficiency $\Psi(b)=\ln b / b$</text>
+    <text class="label" x="240" y="340">Branching factor b</text>
+    <text class="label" transform="translate(-58,150) rotate(-90)">Efficiency Ψ(b) = ln b / b</text>
 
   </g>
 
   <!-- overall title and caption -->
-  <text x="60" y="14" class="title">Efficiency function $\Psi(b)=\dfrac{\ln b}{b}$</text>
-  <text x="60" y="360" class="label">Figure: Efficiency curve showing a unique maximum at $b=e\approx2.718$. Domain shown: $b\in[0.5,10]$.</text>
+  <text x="60" y="20" class="title">Efficiency function Ψ(b) = ln b / b</text>
+  <text x="60" y="368" class="label">Figure: Efficiency curve showing a unique maximum at b = e ≈ 2.718. Domain shown: b ∈ [0.5, 10].</text>
 </svg>
