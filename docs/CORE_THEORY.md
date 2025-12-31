@@ -136,7 +136,7 @@ $$
 Equivalently, the map $u$ is harmonic (energy-minimizing):
 
 $$
-	au(u) = \text{tr}_g \nabla du = 0,
+	au(u) = \operatorname{tr}_g \nabla du = 0,
 $$
 
 where $\tau(u)$ is the tension field. Achieving $\tau(u) = 0$ indicates the network's internal geometry is aligned with input structure and conceptual manifold — the functional signature of **insight**.
@@ -144,5 +144,4 @@ where $\tau(u)$ is the tension field. Achieving $\tau(u) = 0$ indicates the netw
 ## References
 
 [1] Laughlin, S. B., de Ruyter van Steveninck, R. R., & Anderson, J. C. (1998). The metabolic cost of neural information. *Nature Neuroscience*, 1(1), 36–41.
-[2] Niven, J. E., Anderson, J. C., & Laughlin, S. B. (2007). Fly photoreceptors demonstrate energy-information trade-offs in neural coding. *PLoS Biology*, 5(4), e116.
 [2] Niven, J. E., Anderson, J. C., & Laughlin, S. B. (2007). Fly photoreceptors demonstrate energy-information trade-offs in neural coding. *PLoS Biology*, 5(4), e116.
