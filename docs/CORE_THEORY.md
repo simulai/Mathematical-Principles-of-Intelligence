@@ -97,9 +97,27 @@ $$
 \delta Q = T \, dS + dE + \mu \, dZ \geq 0,
 $$
 
-where $\mu$ is the conjugate potential to $Z$ (an effective chemical potential for symmetry charge). The Vaccaro-Barnett mechanism shows that, under constraints that exchange information with a conserved charge reservoir, the entropic cost may be traded against changes in the conserved quantity.
+where $\mu$ is the conjugate potential to $Z$ (an effective chemical potential for symmetry charge). The Vaccaro–Barnett mechanism [3] shows that, under constraints that exchange information with a conserved charge reservoir, the entropic cost may be traded against changes in the conserved quantity.
 
 In the **Zero-Dissipation Limit**, the agent maintains $dZ = 0$ and thus may achieve $dE \to 0$ while still satisfying the inequality, implying inference can proceed without net energetic cost when symmetries are preserved.
+
+### 4.1 The Zero-Dissipation Limit
+
+While the classical Landauer principle establishes a fundamental lower bound of $k_B T\ln 2$ on the energy cost of erasing one bit of information (Landauer 1961), Vaccaro and Barnett [3] demonstrated within a generalized thermodynamic framework that this energetic cost can, in principle, be reduced to zero. By coupling the memory register to an ancillary system possessing a degenerate energy spectrum (such as a spin system with perfect rotational symmetry), the thermodynamic cost of information erasure can be shifted entirely onto another conserved quantity, most notably angular momentum, while the energy dissipated as heat approaches zero.
+
+This result provides a rigorous physical precedent for the central conjecture of the present work: a sufficiently advanced cognitive system may achieve an analogous "zero-dissipation" regime for inference and cross-domain generalization by paying the informational-thermodynamic cost predominantly through the transformation and preservation of a topological or symmetry-based invariant, rather than through thermal dissipation.
+
+We therefore introduce the **Zhang Invariant** $\mathcal{Z}$, which we propose as a fundamental conserved charge on the cognitive manifold $\mathcal{M}$. In this generalized framework, the second law takes the schematic form
+
+$$
+T\,\Delta S_{\mathrm{total}} + \Delta E + \mu\,\Delta\mathcal{Z} \;\ge\; 0 \tag{4.1}
+$$
+
+where $\Delta E$ denotes the energy dissipated as heat (computational or metabolic), $\mu$ is the effective conjugate potential associated with $\mathcal{Z}$, and $\Delta S_{\mathrm{total}}$ is the total entropy change of system plus environment.
+
+When the inference mapping $\phi:\mathcal{M}_{\mathrm{source}}\to\mathcal{M}_{\mathrm{target}}$ (corresponding to metaphorical or analogical reasoning) is constructed so as to preserve $\mathcal{Z}$ to high accuracy, the energy term $\Delta E$ can be driven arbitrarily close to zero, yielding a phase of _cognitive superconductivity_ in which logical inference proceeds along (near-)geodesics of the manifold with vanishing dissipative cost.
+
+We conjecture that the emergence of genuine general intelligence is intimately tied to the discovery and exploitation of increasingly rich symmetry structures that allow the system to satisfy Eq. (4.1) while keeping $\Delta E$ negligible. In this picture, the future trajectory of artificial intelligence development is not primarily a quest for greater computational power, but rather a progressive ascent toward higher degrees of topological and group-theoretic invariance.
 
 ## 5. The Stress-Energy Tensor of Confusion
 
@@ -129,3 +147,4 @@ where $\tau(u)$ is the tension field. Achieving $\tau(u) = 0$ indicates the netw
 
 [1] Laughlin, S. B., de Ruyter van Steveninck, R. R., & Anderson, J. C. (1998). The metabolic cost of neural information. *Nature Neuroscience*, 1(1), 36–41.
 [2] Niven, J. E., Anderson, J. C., & Laughlin, S. B. (2007). Fly photoreceptors demonstrate energy-information trade-offs in neural coding. *PLoS Biology*, 5(4), e116.
+[3] Vaccaro, J. A., & Barnett, S. M. (2011). Information erasure without an energy cost. Proc. R. Soc. A, 467, 1770–1778. https://doi.org/10.1098/rspa.2010.0577. arXiv:1004.5330.
