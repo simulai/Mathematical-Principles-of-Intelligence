@@ -24,29 +24,13 @@ Consider a system that must distribute $N$ units of information or computational
 The structural cost—encompassing metabolic maintenance, wiring, or parameter overhead—scales linearly with the number of branches, i.e., as $O(b)$.
 Conversely, the expressive or channel capacity, benefiting from parallelization and noise averaging, scales logarithmically with $b$ for a fixed $N$, as $O(\log_b N) \propto \ln N / \ln b$.
 
-The net informational efficiency $\Psi(b)$ can thus be modeled as the ratio of the log-capacity gain to the linear structural cost. For a fixed $N$, this reduces to a function of the branching factor $b$:
+The net informational efficiency $\Psi(b)$ can thus be modeled as the ratio of the log-capacity gain to the linear structural cost. For a fixed $N$, this reduces to a function of the branching factor $b$: $\Psi(b)=\dfrac{\ln b}{b}$ (2.1), $b>0$.
 
-$$
-\Psi(b) = \frac{\ln b}{b}, \quad b > 0. \tag{2.1}
-$$
+To find the branching factor that maximizes this efficiency, we compute the first derivative with respect to $b$: $\dfrac{d\Psi}{db}=\dfrac{1-\ln b}{b^2}$ (2.2).
 
-To find the branching factor that maximizes this efficiency, we compute the first derivative with respect to $b$:
+Setting the derivative to zero identifies the stationary points: $\dfrac{1-\ln b}{b^2}=0\Rightarrow 1-\ln b=0$ (2.3).
 
-$$
-\frac{d\Psi}{db} = \frac{1 - \ln b}{b^2}. \tag{2.2}
-$$
-
-Setting the derivative to zero identifies the stationary points:
-
-$$
-\frac{1 - \ln b}{b^2} = 0 \quad \Rightarrow \quad 1 - \ln b = 0. \tag{2.3}
-$$
-
-Solving this yields the unique critical point:
-
-$$
-\ln b = 1 \quad \Rightarrow \quad b = e \approx 2.718. \tag{2.4}
-$$
+Solving this yields the unique critical point: $\ln b=1\Rightarrow b=e\approx2.718$ (2.4).
 
 ### 2.2 Verification of the Maximum
 
