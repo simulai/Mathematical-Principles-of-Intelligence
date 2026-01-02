@@ -146,10 +146,12 @@ class TweetDataset(Dataset):
 # Training Loop
 # ==========================================
 
-def train(model, loader, optimizer, device):
+import argparse
+
+def train(model, loader, optimizer, device, log_interval=10):
     model.train()
     total_loss = 0
-    for batch in loader:
+    for i, batch in enumerate(loader):
         optimizer.zero_grad()
         input_ids = batch['input_ids'].to(device)
         mask = batch['attention_mask'].to(device)
@@ -159,23 +161,41 @@ def train(model, loader, optimizer, device):
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
+        
+        if (i + 1) % log_interval == 0:
+            print(f"  > Batch {i+1}/{len(loader)} | Loss: {loss.item():.4f}")
+            
     return total_loss / len(loader)
 
 def predict(model, loader, device):
     model.eval()
     preds = []
+    print("  > Generating predictions...")
     with torch.no_grad():
-        for batch in loader:
+        for i, batch in enumerate(loader):
             input_ids = batch['input_ids'].to(device)
             mask = batch['attention_mask'].to(device)
             logits, _ = model(input_ids, mask)
             preds.extend(torch.argmax(logits, dim=1).cpu().numpy())
+            if (i + 1) % 20 == 0:
+                 print(f"  > Prediction batch {i+1}/{len(loader)}")
     return preds
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--demo", action="store_true", help="Run with small subset for quick verification")
+    parser.add_argument("--fast", action="store_true", help="Use TinyBERT for faster CPU training")
+    args = parser.parse_args()
+
     # Setup
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
+    
+    model_name = "prajjwal1/bert-tiny" if args.fast else "distilbert-base-uncased"
+    if device.type == 'cpu' and not args.fast and not args.demo:
+        print("[WARNING] You are training DistilBERT on CPU. This will be VERY slow.")
+        print("          Use --fast to switch to TinyBERT for 10x speedup.")
+        print("          Use --demo to run on a small subset.")
     
     # Check data
     train_path = "data/nlp-getting-started/train.csv"
@@ -198,15 +218,22 @@ def main():
         })
         dummy_test.to_csv(test_path, index=False)
     
-    # Initialize
-    tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+    # Initialize tokenizer
+    print(f"Loading tokenizer: {model_name}...")
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
     train_dataset = TweetDataset(train_path, tokenizer)
     test_dataset = TweetDataset(test_path, tokenizer, is_test=True)
+
+    if args.demo:
+        print("[DEMO MODE] Truncating dataset to 100 samples for quick verification...")
+        train_dataset.df = train_dataset.df.head(100).copy().reset_index(drop=True)
+        test_dataset.df = test_dataset.df.head(100).copy().reset_index(drop=True)
     
-    train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
-    test_loader = DataLoader(test_dataset, batch_size=16)
+    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=32)
     
-    model = MPIDisasterModel().to(device)
+    print(f"Initializing model: {model_name}...")
+    model = MPIDisasterModel(model_name=model_name).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)
     
     # Train
@@ -220,8 +247,12 @@ def main():
     predictions = predict(model, test_loader, device)
     
     # Save submission
-    sub_df = pd.read_csv(test_path)
-    sub_df['target'] = predictions
+    # Safe construction of submission dataframe
+    sub_df = pd.DataFrame({
+        'id': test_dataset.df['id'].values,
+        'target': predictions
+    })
+    
     # Keep only id and target
     submission = sub_df[['id', 'target']]
     submission.to_csv("submission.csv", index=False)
