@@ -50,3 +50,8 @@ d:\code\MPI\tools\kaggle-mcp\src\kaggle_server\kaggle.json
 dist/
 build/
 *.egg-info/
+
+# Data & Results
+data/
+submission.csv
+*.csv
