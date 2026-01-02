@@ -1,11 +1,14 @@
 # The Mathematical Principles of Intelligence
 ## Thermodynamic Constraints, e-base Scaling Law, and the Zhang Invariant
 
+[![Status](https://img.shields.io/badge/Status-Pre--print-orange?style=flat-square)](./docs/OVERVIEW.md)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey?style=flat-square)](LICENSE)
+[![Formal Verification](https://img.shields.io/badge/Formal%20Verification-Lean%204-green?style=flat-square&logo=lean)](./lean_playground)
+[![Theory](https://img.shields.io/badge/e--Base%20Scaling-b%20%3D%20e-blue?style=flat-square)](./docs/CORE_THEORY.md)
+[![MCP](https://img.shields.io/badge/MCP-Ready-important?style=flat-square)](./tools)
+
 **Author:** Jing Zhang ([@simulai](https://github.com/simulai))  
-**Status:** Pre-print / Paradigm Shift Proposal  
 **Date:** December 2025  
-**License:** CC BY-NC-SA 4.0  
-![Status](https://img.shields.io/badge/Status-Paradigm%20Shift-blueviolet) ![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey)
 
 ---
 
@@ -14,6 +17,7 @@ This work formalizes a unified theory of intelligence as a **Zero-Dissipation Li
 
 ### 🔑 Key Breakthroughs
 1.  **The $e$-base Scaling Law**: Demonstrates the universal optimal branching factor for information transfer efficiency is the mathematical constant $e \approx 2.718$.
+    *   *Formally verified in Lean 4: [`EBase.lean`](./lean_playground/LeanPlayground/EBase.lean)*
 2.  **The Zhang Invariant ($\mathcal{Z}$)**: Identifies a conserved topological charge in cognitive state-space that constrains entropy production.
 3.  **Symmetry-for-Energy Substitution**: Applies the Vaccaro-Barnett mechanism to cognitive processes, explaining how abstraction and metaphor leverage symmetry to erase entropy.
 
@@ -26,9 +30,11 @@ Read the **[Manuscript Overview](./docs/OVERVIEW.md)** for a non-technical summa
 
 ### For Mathematicians & Physicists
 Dive directly into the formal definitions and proofs in the **[Core Theory](./docs/CORE_THEORY.md)** document.
+*   **New**: Check the formal proofs in the **[`lean_playground`](./lean_playground)** directory, which verify the cognitive efficiency axioms.
 
 ### For Engineers & AI Researchers
 Explore the **[Models & Simulations](./models/)** directory for computational implementations of the scaling law and invariant dynamics.
+*   **Tools**: Use our **[MCP Servers](./tools/)** to integrate these theories directly into your LLM workflow.
 
 ---
 
@@ -87,7 +93,3 @@ To prove this supremacy, we implemented a learning task with a sudden "Paradigm 
 ![Ricci Flow Learning](docs/images/ricci_flow_learning.png)
 
 👉 **[Read the Full Supremacy Analysis](docs/research/MPI_vs_mHC_Supremacy.md)**
-
----
-
-可选：访问 https://shields.io/ 可定制更多徽章样式与统计（issues、license 等）。
