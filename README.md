@@ -63,4 +63,31 @@ A topological charge defined over cycles $\Gamma$ in the cognitive connection bu
 [![GitHub Forks](https://img.shields.io/github/forks/simulai/Mathematical-Principles-of-Intelligence?style=social)](https://github.com/simulai/Mathematical-Principles-of-Intelligence/network/members)
 [![GitHub Watchers](https://img.shields.io/github/watchers/simulai/Mathematical-Principles-of-Intelligence?style=social)](https://github.com/simulai/Mathematical-Principles-of-Intelligence/watchers)
 
+## 🔬 Empirical Validation & Theoretical Supremacy
+
+### 1. The mHC Validation (DeepSeek-AI)
+**Update (January 2026):** The core hypothesis of this theory—that cognitive flow must be constrained to a specific manifold—has received striking empirical support from DeepSeek-AI's recent work on **Manifold-Constrained Hyper-Connections (mHC)** (arXiv:2512.24880).
+
+As our simulation below demonstrates, unconstrained cognitive flow leads to signal explosion, whereas projecting the flow onto a **Birkhoff Polytope** (a specific realization of the **Zhang Invariant**) ensures perfect signal conservation.
+
+![Manifold Alignment Simulation](models/manifold_alignment.gif)
+
+### 2. Why MPI is the Unified Theory
+While mHC provides a robust **engineering solution** (using Doubly Stochastic Matrices to fix stability), **MPI provides the First Principles**.
+
+*   **Generalization**: mHC is a subset of MPI. It represents the "Zero-Temperature Limit" where the Zhang Invariant ($\mathcal{Z}$) is strictly conserved. MPI allows for dynamic metric evolution (Ricci Flow), enabling **Creativity** and **Insight** (Phase Transitions) that static constraints like mHC cannot model.
+*   **Efficiency**: mHC does not predict optimal scaling. MPI's **$e$-base Scaling Law** proves that the optimal branching factor is $e \approx 2.718$.
+
+### 3. Simulation: Dynamic Adaptation (Ricci Flow)
+To prove this supremacy, we implemented a learning task with a sudden "Paradigm Shift" (Distribution Change).
+
+*   **mHC (Gray Dashed)**: Rigidly adheres to the manifold. It remains stable but struggles to learn the new pattern quickly because it cannot "jump" across the manifold.
+*   **MPI (Red Solid)**: Uses "Cognitive Temperature" to temporarily relax constraints (Phase Transition). Note the spike in **Zhang Invariant Violation** (Orange Graph) corresponding to the "Aha!" moment, allowing rapid adaptation to the new paradigm before cooling back down.
+
+![Ricci Flow Learning](docs/images/ricci_flow_learning.png)
+
+👉 **[Read the Full Supremacy Analysis](docs/research/MPI_vs_mHC_Supremacy.md)**
+
+---
+
 可选：访问 https://shields.io/ 可定制更多徽章样式与统计（issues、license 等）。

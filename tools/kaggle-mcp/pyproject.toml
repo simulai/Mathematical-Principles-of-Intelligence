@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kaggle-server"
+version = "0.1.0"
+description = "MCP server for Kaggle interactions"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp",
+    "kaggle",
+    "smithery",
+    "pandas"
+]
+
+[project.scripts]
+dev = "smithery.cli.dev:main"
+start = "smithery.cli.start:main"
+
+[tool.smithery]
+server = "kaggle_server.server:create_server"

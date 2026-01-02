@@ -1,0 +1,13 @@
+{
+  "id": "timingtime/mpi-theory-sinkhorn-moe-verification",
+  "title": "Sinkhorn-MoE & SPHA Protocol: ZHAP-5 Validation",
+  "code_file": "MPI_MoE_Kaggle.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
