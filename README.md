@@ -89,8 +89,18 @@ We have validated the MPI theory in real-world NLP competitions.
 
 *   **Disaster Tweets (Natural Language Processing with Disaster Tweets)**:
     *   **Goal**: Demonstrate that SPHA (e-base attention) + Zhang Invariant Regularization outperforms standard Transformer baselines.
-    *   **Result**: Achieved **F1 Score 0.82684** (Top tier for single-model DistilBERT) using only 3 epochs.
+    *   **Result**: Achieved **F1 Score 0.82868** (Top tier for single-model DistilBERT) using 5-Fold CV + 3 Epochs.
     *   **Status**: [Code Ready](./models/kaggle_disaster_tweets_mpi.py), [Instructions](./INSTRUCTIONS_KAGGLE.md)
+    *   **Metrics & Configuration**:
+        | Metric | Value | Note |
+        | :--- | :--- | :--- |
+        | **F1 Score** | **0.82868** | Public Leaderboard (Improvement from 0.82684) |
+        | **Model Architecture** | DistilBERT + MPI | SPHA (e-base) + Zhang Invariant Loss |
+        | **Strategy** | 5-Fold CV | Ensembling 5 models |
+        | **Epochs** | 3 per fold | Fast convergence |
+        | **Optimizer** | AdamW | LR: 2e-5 |
+        | **Regularization** | $\lambda_z = 0.05$ | Zhang Invariant Weight |
+        | **Attention** | SPHA | Branching Factor $b=e$ |
 *   **AI Mathematical Olympiad (Progress Prize 3)**:
     *   **Goal**: Utilize Lean 4 and MPI's formal reasoning framework to solve complex mathematical problems.
     *   **Status**: Research Phase
