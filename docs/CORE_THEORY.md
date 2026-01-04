@@ -154,23 +154,12 @@ This derivation provides a first-principles argument for the emergence of the na
 ## 3. Physical Interpretations: Resolving the Landauer Limit
 
 Landauer's bound sets a minimal energetic cost for erasure, $\Delta E \geq k_B T \ln 2$.
-We propose a generalized thermodynamic identity for a cognitive inference step that includes a symmetry-charge term associated with the Zhang Invariant:
+We propose a generalized thermodynamic identity for a cognitive inference step that includes a symmetry-charge term associated with the Cognitive Holonomy:
+$$T\Delta S + \Delta E + \mu \Delta \mathcal{H} \ge 0$$
+where $\Delta \mathcal{H}$ represents the change in the holonomy (topological charge) of the system. In the "Zero-Dissipation Limit" (or "Cold Intelligence"), the system minimizes entropy production by strictly conserving this charge ($\Delta \mathcal{H} = 0$).
 
-$$
-\delta Q = T \, dS + dE + \mu \, dZ \geq 0,
-$$
-
-where $\mu$ is the conjugate potential to $Z$ (an effective chemical potential for symmetry charge). The Vaccaro–Barnett mechanism [3] shows that, under constraints that exchange information with a conserved charge reservoir, the entropic cost may be traded against changes in the conserved quantity.
-
-In the **Zero-Dissipation Limit**, the agent maintains $dZ = 0$ and thus may achieve $dE \to 0$ while still satisfying the inequality, implying inference can proceed without net energetic cost when symmetries are preserved.
-
-### 3.1 The Zero-Dissipation Limit
-
-While the classical Landauer principle establishes a fundamental lower bound of $k_B T\ln 2$ on the energy cost of erasing one bit of information (Landauer 1961), Vaccaro and Barnett [3] demonstrated within a generalized thermodynamic framework that this energetic cost can, in principle, be reduced to zero. By coupling the memory register to an ancillary system possessing a degenerate energy spectrum (such as a spin system with perfect rotational symmetry), the thermodynamic cost of information erasure can be shifted entirely onto another conserved quantity, most notably angular momentum, while the energy dissipated as heat approaches zero.
-
-This result provides a rigorous physical precedent for the central conjecture of the present work: a sufficiently advanced cognitive system may achieve an analogous "zero-dissipation" regime for inference and cross-domain generalization by paying the informational-thermodynamic cost predominantly through the transformation and preservation of a topological or symmetry-based invariant, rather than through thermal dissipation.
-
-We therefore introduce the **Zhang Invariant** $\mathcal{Z}$, which we propose as a fundamental conserved charge on the cognitive manifold $\mathcal{M}$. In this generalized framework, the second law takes the schematic form
+### 1.9 Generalized Second Law for Intelligence
+We therefore introduce the **Cognitive Holonomy** $\mathcal{H}$, which we propose as a fundamental conserved charge on the cognitive manifold $\mathcal{M}$. In this generalized framework, the second law takes the schematic form
 
 $
 T\,\Delta S_{\mathrm{total}} + \Delta E + \mu\,\Delta\mathcal{Z} \;\ge\; 0 \tag{3.1}
@@ -192,7 +181,7 @@ To test the hypothesis that "correct reasoning paths exhibit lower geometric ent
 **Experimental Setup:**
 *   **Problems**: 2 Standard AIMO-style problems.
 *   **Paths**: 3 paths per problem (1 Correct, 2 Incorrect).
-*   **Metric**: Zhang Invariant (Z-Score) calculated via DistilBERT embeddings and $L_2$ difference.
+*   **Metric**: Cognitive Holonomy (H-Score) calculated via DistilBERT embeddings and $L_2$ difference.
 
 **Raw Data:**
 
@@ -214,7 +203,7 @@ To test the hypothesis that "correct reasoning paths exhibit lower geometric ent
 1.  **Weak Correlation**: The global average supports the hypothesis (Correct < Incorrect), but the margin is thin.
 2.  **The "Confidently Wrong" Phenomenon**: In EXP_002, the "Sign Error" path had the *lowest* entropy (0.001207), beating the correct path. This indicates that the current Z-score implementation measures **internal coherence** rather than **external truth**. A logical fallacy that *flows* smoothly (e.g., a simple calculation error in a confident derivation) appears "low entropy".
 3.  **The "High Entropy" of Confusion**: In EXP_001, the "Double Counting" error (Path B) had significantly higher entropy (0.0024), validating that structural confusion spikes the metric.
-4.  **Conclusion**: The Zhang Invariant is a **necessary but not sufficient** condition for truth. A high Z-score reliably flags confusion, but a low Z-score guarantees only consistency, not correctness. Future work must integrate "External Verification" (e.g., Lean 4) to differentiate between *coherent hallucinations* and *coherent truths*.
+4.  **Conclusion**: The Cognitive Holonomy is a **necessary but not sufficient** condition for truth. A high H-score reliably flags confusion, but a low H-score guarantees only consistency, not correctness. Future work must integrate "External Verification" (e.g., Lean 4) to differentiate between *coherent hallucinations* and *coherent truths*.
 
 ## References
 

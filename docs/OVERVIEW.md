@@ -18,12 +18,12 @@ Current AI models struggle because their "cognitive manifold"—the internal map
 
 
 
-## 3. The Zhang Invariant: The Currency of Wisdom
+## 3. The Cognitive Holonomy: The Currency of Wisdom
 Why can a human genius (like Ramanujan) make a profound leap of logic with only a few watts of brainpower, while a GPU cluster requires megawatts to achieve similar reasoning?
 
-The answer lies in the **Zhang Invariant ($\mathcal{Z}$)**. 
+The answer lies in the **Cognitive Holonomy ($\mathcal{H}$)**. 
 * **Thermal AI** pays for its lack of understanding with **Energy ($\Delta E$)**.
-* **Cold Intelligence** pays for its understanding with **Symmetry ($\Delta \mathcal{Z}$)**.
+* **Cold Intelligence** pays for its understanding with **Symmetry ($\Delta \mathcal{H}$)**.
 
 By leveraging the **Vaccaro-Barnett mechanism**, we show that information can be processed without energy cost if the system conserves specific topological properties. This is the mathematical definition of **Insight**: the ability to erase cognitive uncertainty by recognizing universal symmetries.
 
