@@ -221,16 +221,22 @@ class MPIReasoningAgent:
             # Inject noise and measure if the system can "pull back" to logic
             fantasy_embeddings, fantasy_h_score = self.symplectic_dynamics(embeddings_f)
             
-            # Calculate Cognitive Holonomy Loss on the FANTASY path
-            # This measures: "Is the creative variation of this thought still logical?"
-            h_score = fantasy_h_score.item()
+            # --- Holonomic Correction (The "Pullback") ---
+            # Simulating the Manifold ODE Solver: pull the fantasy back to the geodesic
+            # If the thought is robust, this correction should be small (stable attractor).
+            # If the thought is a hallucination, this correction will be large (unstable).
+            correction_delta = torch.norm(fantasy_embeddings - embeddings_f)
+            
+            # Final Score = Holonomy + Correction Effort
+            # A good thought has low curvature AND is a stable attractor (hard to push away)
+            h_score = fantasy_h_score.item() + 0.1 * correction_delta.item()
             
             # Get per-step entropy (using the filtered embeddings for precision)
             step_entropy = self.holonomy_loss(embeddings_f, return_per_step=True).squeeze().tolist()
             if isinstance(step_entropy, float):
                 step_entropy = [step_entropy]
                 
-            print(f"  Candidate: {cand['name']} | H-Score (Fantasy): {h_score:.4f}")
+            print(f"  Candidate: {cand['name']} | H-Score: {h_score:.4f} (Base: {fantasy_h_score.item():.4f} + Corr: {correction_delta.item():.4f})")
             
             candidate_scores.append({
                 "name": cand['name'],
