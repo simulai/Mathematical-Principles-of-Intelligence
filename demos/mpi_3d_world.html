@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPI Cognitive Manifold 3D</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Courier New', Courier, monospace; }
+        #info {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            color: #00ffcc;
+            pointer-events: none;
+            z-index: 100;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #fff;
+            background: rgba(0, 20, 40, 0.8);
+            padding: 15px;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background: transparent;
+            color: #00ffcc;
+            border: 1px solid #00ffcc;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 5px;
+            font-family: inherit;
+        }
+        button:hover { background: #00ffcc; color: #000; }
+        .label { font-weight: bold; margin-bottom: 5px; display: block; }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h1>MPI COGNITIVE MANIFOLD</h1>
+        <p>Visualizing the Topology of Thought</p>
+    </div>
+    <div id="controls">
+        <span class="label">Holonomy Control</span>
+        <button id="btn-chaos">Inject Chaos (High T)</button>
+        <button id="btn-cool">Cool Down (Low T)</button>
+        <br><br>
+        <span class="label">Symplectic Dynamics</span>
+        <button id="btn-fantasy">Trigger Fantasy</button>
+        <br><br>
+        <span class="label">View Mode</span>
+        <button id="btn-wireframe">Toggle Wireframe</button>
+    </div>
+
+    <!-- Import Three.js via CDN -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- SCENE SETUP ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x050510);
+        scene.fog = new THREE.FogExp2(0x050510, 0.02);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 15, 30);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+
+        // --- MANIFOLD GENERATION (Terrain) ---
+        const geometry = new THREE.PlaneGeometry(60, 60, 60, 60);
+        const material = new THREE.MeshStandardMaterial({
+            color: 0x0088ff,
+            wireframe: true,
+            emissive: 0x001133,
+            roughness: 0.5,
+            metalness: 0.8
+        });
+        const terrain = new THREE.Mesh(geometry, material);
+        terrain.rotation.x = -Math.PI / 2;
+        scene.add(terrain);
+
+        // Store original positions for animation
+        const posAttribute = geometry.attributes.position;
+        const originalPositions = [];
+        for (let i = 0; i < posAttribute.count; i++) {
+            originalPositions.push(posAttribute.getZ(i));
+        }
+
+        // --- AGENTS (Thoughts) ---
+        const agents = [];
+        const agentCount = 50;
+        const agentGeometry = new THREE.SphereGeometry(0.3, 8, 8);
+        const agentMaterial = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+
+        for (let i = 0; i < agentCount; i++) {
+            const agent = new THREE.Mesh(agentGeometry, agentMaterial);
+            scene.add(agent);
+            agents.push({
+                mesh: agent,
+                x: (Math.random() - 0.5) * 50,
+                z: (Math.random() - 0.5) * 50,
+                vx: (Math.random() - 0.5) * 0.1,
+                vz: (Math.random() - 0.5) * 0.1,
+                stuck: false
+            });
+        }
+
+        // --- LIGHTING ---
+        const ambientLight = new THREE.AmbientLight(0x404040);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0x00ffcc, 2, 50);
+        pointLight.position.set(0, 10, 0);
+        scene.add(pointLight);
+        
+        // --- ATTRACTOR (The Truth) ---
+        const attractorGeo = new THREE.IcosahedronGeometry(1, 0);
+        const attractorMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
+        const attractor = new THREE.Mesh(attractorGeo, attractorMat);
+        attractor.position.set(0, 2, 0);
+        scene.add(attractor);
+
+        // --- STATE VARIABLES ---
+        let time = 0;
+        let temperature = 1.0; // Controls noise height
+        let friction = 0.95;   // Controls agent movement damping
+        let targetTemp = 1.0;
+
+        // --- ANIMATION LOOP ---
+        function animate() {
+            requestAnimationFrame(animate);
+
+            time += 0.01;
+            
+            // Smoothly interpolate temperature
+            temperature += (targetTemp - temperature) * 0.05;
+
+            // 1. Animate Terrain (The Manifold Breathing)
+            for (let i = 0; i < posAttribute.count; i++) {
+                const x = geometry.attributes.position.getX(i);
+                const y = geometry.attributes.position.getY(i); // This is Z in world space
+                
+                // Calculate "Energy Potential"
+                // Central valley (Truth) + Noise (Chaos)
+                const dist = Math.sqrt(x*x + y*y);
+                const valley = -10 * Math.exp(-dist * 0.1); // Deep valley at 0,0
+                
+                // Perlin-like noise (approximated with sin/cos)
+                const noise = (Math.sin(x * 0.5 + time) * Math.cos(y * 0.5 + time)) * 2 * temperature;
+                const highFreq = (Math.sin(x * 2 + time*2) * Math.cos(y * 2)) * 0.5 * temperature;
+                
+                const z = valley + noise + highFreq;
+                posAttribute.setZ(i, z);
+            }
+            posAttribute.needsUpdate = true;
+
+            // 2. Animate Agents (Gradient Descent + Symplectic Noise)
+            agents.forEach(agent => {
+                // Get height at current position (approximate)
+                const dist = Math.sqrt(agent.x*agent.x + agent.z*agent.z);
+                const valleyGradient = 10 * 0.1 * Math.exp(-dist * 0.1) * (1/dist || 0); // Derivative towards center
+                
+                // Forces
+                const forceX = -agent.x * valleyGradient * 0.1;
+                const forceZ = -agent.z * valleyGradient * 0.1;
+                
+                // Symplectic Noise (Fantasy)
+                const noiseX = (Math.random() - 0.5) * 0.2 * temperature;
+                const noiseZ = (Math.random() - 0.5) * 0.2 * temperature;
+
+                // Update Velocity
+                agent.vx += forceX + noiseX;
+                agent.vz += forceZ + noiseZ;
+                agent.vx *= friction;
+                agent.vz *= friction;
+
+                // Update Position
+                agent.x += agent.vx;
+                agent.z += agent.vz;
+
+                // Bounds check
+                if (agent.x < -30) agent.x = 30;
+                if (agent.x > 30) agent.x = -30;
+                if (agent.z < -30) agent.z = 30;
+                if (agent.z > 30) agent.z = -30;
+
+                // Update Mesh Y position based on terrain
+                // Re-calculating height for visualization
+                const noise = (Math.sin(agent.x * 0.5 + time) * Math.cos(agent.z * 0.5 + time)) * 2 * temperature;
+                const highFreq = (Math.sin(agent.x * 2 + time*2) * Math.cos(agent.z * 2)) * 0.5 * temperature;
+                const height = -10 * Math.exp(-Math.sqrt(agent.x**2 + agent.z**2) * 0.1) + noise + highFreq;
+                
+                agent.mesh.position.set(agent.x, height + 0.3, agent.z);
+                
+                // Color change based on proximity to Truth (0,0)
+                if (dist < 5) {
+                    agent.mesh.material.color.setHex(0x00ff00); // Green = Truth
+                } else {
+                    agent.mesh.material.color.setHex(0xffaa00); // Orange = Searching
+                }
+            });
+
+            // 3. Animate Attractor
+            attractor.rotation.y += 0.01;
+            attractor.rotation.x += 0.005;
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // --- INTERACTION ---
+        document.getElementById('btn-chaos').addEventListener('click', () => {
+            targetTemp = 3.0; // High Entropy
+            friction = 0.99;  // Slippery
+        });
+
+        document.getElementById('btn-cool').addEventListener('click', () => {
+            targetTemp = 0.2; // Low Entropy (Crystallization)
+            friction = 0.90;  // High friction (settle down)
+        });
+
+        document.getElementById('btn-fantasy').addEventListener('click', () => {
+            // Instant burst of energy
+            agents.forEach(a => {
+                a.vx += (Math.random() - 0.5) * 2;
+                a.vz += (Math.random() - 0.5) * 2;
+            });
+            targetTemp = 1.5;
+            setTimeout(() => { targetTemp = 0.5; }, 1000); // Cool down after burst
+        });
+
+        let wireframe = true;
+        document.getElementById('btn-wireframe').addEventListener('click', () => {
+            wireframe = !wireframe;
+            terrain.material.wireframe = wireframe;
+        });
+
+        // Window Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
