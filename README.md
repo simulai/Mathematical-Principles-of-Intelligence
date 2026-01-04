@@ -15,11 +15,19 @@
 ## 🌌 Abstract
 This work formalizes a unified theory of intelligence as a **Zero-Dissipation Limit** in a Riemannian cognitive manifold. We prove that intelligence is not merely a computational heuristic but a thermodynamic imperative governed by the **Cognitive Holonomy ($\mathcal{H}$)**, enabling "cognitive superconductivity" where reasoning approaches zero energy cost under symmetry preservation.
 
+### 🎮 The "Toys" of Theory (Interactive Demos)
+We believe theory should be tangible. We have built "Sci-Fi" interfaces to visualize these abstract concepts:
+
+1.  **[The Truth Derivation Machine](./models/truth_machine_terminal.py)**: A terminal-based simulation of the "Holonomic Engine". It ingests raw chaos (or protein sequences via `--bio`) and crystallizes them into truth via symplectic cooling.
+2.  **[MPI 3D World](./demos/mpi_3d_world.html)**: A WebGL visualization of the **Cognitive Manifold**. Watch "Thought Particles" navigate the entropy landscape, triggered by Symplectic Fantasy and guided by Geodesic Truth.
+
 ### 🔑 Key Breakthroughs
 1.  **The $e$-base Scaling Law**: Demonstrates the universal optimal branching factor for information transfer efficiency is the mathematical constant $e \approx 2.718$.
     *   *Formally verified in Lean 4: [`EBase.lean`](./lean_playground/LeanPlayground/EBase.lean)*
 2.  **The Cognitive Holonomy ($\mathcal{H}$)**: Identifies a conserved topological charge in cognitive state-space that constrains entropy production.
-3.  **Symmetry-for-Energy Substitution**: Applies the Vaccaro-Barnett mechanism to cognitive processes, explaining how abstraction and metaphor leverage symmetry to erase entropy.
+3.  **The "Vice-is-Virtue" Principle**: Proves that hardware defects (noise, drift) in Memristors are actually **computational assets** (creativity, forgetting) when viewed through the lens of Symplectic Dynamics.
+    *   *Verified via [Memristor Simulation](./models/memristor_mpi_sim.py)*.
+4.  **Bio-Holonomy**: Extends the framework to biology, treating Protein Folding as a search for "Zero Holonomy" truth.
 
 ---
 
