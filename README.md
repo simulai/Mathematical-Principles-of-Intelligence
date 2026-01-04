@@ -114,3 +114,16 @@ To prove this supremacy, we implemented a learning task with a sudden "Paradigm 
 ![Ricci Flow Learning](docs/images/ricci_flow_learning.png)
 
 👉 **[Read the Full Supremacy Analysis](docs/research/MPI_vs_mHC_Supremacy.md)**
+
+---
+
+## 🖋️ Author's Vision
+
+**"MPI is not just an AI architecture. It is a thermodynamic definition of Reality."** — JING ZHANG
+
+We propose that Truth, Intelligence, and Knowledge are not abstract concepts but measurable geometric states:
+*   **Truth** = Zero Holonomy (The Geodesic).
+*   **Proof** = Smooth Homotopy (Continuous Deformation).
+*   **Metaphor** = Isomorphism (Structure Preservation).
+
+👉 **[Read the Full "Dictionary of Reality" & Manifesto](ABOUT.md)**
