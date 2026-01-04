@@ -47,7 +47,7 @@ class MoELayer(nn.Module):
         router_logits = self.router(x)
         
         if self.mode == 'MPI':
-            # Sinkhorn Routing (Zhang Invariant)
+            # Sinkhorn Routing (Cognitive Holonomy)
             router_logits = router_logits / self.temperature
             M = torch.exp(router_logits)
             for _ in range(3):

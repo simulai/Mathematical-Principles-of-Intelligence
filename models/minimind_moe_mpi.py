@@ -63,7 +63,7 @@ class MoELayer(nn.Module):
         
         # --- MPI INTERVENTION ---
         if self.mode == 'MPI':
-            # Apply Zhang Invariant (Sinkhorn) to logits before selection
+            # Apply Cognitive Holonomy (Sinkhorn) to logits before selection
             # This ensures the routing probability mass is "conserved"
             # Instead of raw softmax, we view the router-token matrix as a transport plan
             
@@ -165,7 +165,7 @@ def run_simulation():
     axes[0].set_ylabel("Token Count")
     
     axes[1].hist(indices_mpi, bins=range(num_experts+1), rwidth=0.8, color='green', alpha=0.7)
-    axes[1].set_title(f"MPI-Enhanced MoE (Entropy: {entropy_mpi:.2f})\nBenefit: Load Balancing (Zhang Invariant)")
+    axes[1].set_title(f"MPI-Enhanced MoE (Entropy: {entropy_mpi:.2f})\nBenefit: Load Balancing (Cognitive Holonomy)")
     axes[1].set_xlabel("Expert ID")
     
     plt.tight_layout()

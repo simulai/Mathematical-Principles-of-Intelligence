@@ -8,7 +8,7 @@ To ensure scientific rigor, we distinguish between proven theorems, empirical ph
 
 | Level | Status | Description |
 | :--- | :--- | :--- |
-| **I. Empirical Phenomenon** | **Verified** | In our multi-path reasoning system, **correct paths consistently exhibit lower Z-Scores (surrogate entropy)** compared to incorrect ones. The system naturally gravitates towards these low-energy attractors. |
+| **I. Empirical Phenomenon** | **Verified** | In our multi-path reasoning system, **correct paths consistently exhibit lower H-Scores (surrogate entropy)** compared to incorrect ones. The system naturally gravitates towards these low-energy attractors. |
 | **II. Mathematical Derivation** | **Proven** | The optimization of the efficiency function $\Psi(b) = \ln b / b$ yields a unique maximum at $b=e$. This is a mathematical certainty under the stated axioms of linear cost and logarithmic gain. |
 | **III. Engineering Definition** | **Implemented** | The **"Cognitive Holonomy" ($\mathcal{H}$)** is defined *within this system* as a geometric order parameter measuring trajectory smoothness. It is currently approximated via $L_2$ regularization. |
 | **IV. Physical Hypothesis** | **Strong Hypothesis** | Intelligence functions as a **dissipative structure** (Prigogine) that locally reduces entropy by exporting it to the environment, potentially minimizing a geometric invariant (holonomy) as a proxy for "understanding". |
@@ -162,21 +162,21 @@ where $\Delta \mathcal{H}$ represents the change in the holonomy (topological ch
 We therefore introduce the **Cognitive Holonomy** $\mathcal{H}$, which we propose as a fundamental conserved charge on the cognitive manifold $\mathcal{M}$. In this generalized framework, the second law takes the schematic form
 
 $
-T\,\Delta S_{\mathrm{total}} + \Delta E + \mu\,\Delta\mathcal{Z} \;\ge\; 0 \tag{3.1}
+T\,\Delta S_{\mathrm{total}} + \Delta E + \mu\,\Delta\mathcal{H} \;\ge\; 0 \tag{3.1}
 $
 
-where $\Delta E$ denotes the energy dissipated as heat, $\mu$ is the effective conjugate potential associated with $\mathcal{Z}$.
+where $\Delta E$ denotes the energy dissipated as heat, $\mu$ is the effective conjugate potential associated with $\mathcal{H}$.
 
 **Dissipative Structure Interpretation:**
-Following Prigogine's framework, the intelligent agent acts as a **dissipative structure**. It does not violate the Second Law; rather, it maintains a low-entropy internal state (high $\mathcal{Z}$-preservation) by actively dissipating entropy to the environment (high $\Delta S_{\mathrm{total}}$). The "Zero-Dissipation Limit" is an asymptotic ideal where the internal structural cost of computation is minimized via geometric alignment.
+Following Prigogine's framework, the intelligent agent acts as a **dissipative structure**. It does not violate the Second Law; rather, it maintains a low-entropy internal state (high $\mathcal{H}$-preservation) by actively dissipating entropy to the environment (high $\Delta S_{\mathrm{total}}$). The "Zero-Dissipation Limit" is an asymptotic ideal where the internal structural cost of computation is minimized via geometric alignment.
 
-When the inference mapping $\phi:\mathcal{M}_{\mathrm{source}}\to\mathcal{M}_{\mathrm{target}}$ is constructed so as to preserve $\mathcal{Z}$ to high accuracy, the internal energy cost $\Delta E$ can be minimized.
+When the inference mapping $\phi:\mathcal{M}_{\mathrm{source}}\to\mathcal{M}_{\mathrm{target}}$ is constructed so as to preserve $\mathcal{H}$ to high accuracy, the internal energy cost $\Delta E$ can be minimized.
 
 We conjecture that the emergence of general intelligence is tied to the discovery of symmetry structures that allow the system to satisfy Eq. (3.1) efficiently.
 
 ## 4. Empirical Verification (Preliminary)
 
-To test the hypothesis that "correct reasoning paths exhibit lower geometric entropy (Z-score)", we conducted a controlled experiment (`run_entropy_experiment.py`) using pre-defined reasoning trajectories for standard math problems.
+To test the hypothesis that "correct reasoning paths exhibit lower geometric entropy (H-score)", we conducted a controlled experiment (`run_entropy_experiment.py`) using pre-defined reasoning trajectories for standard math problems.
 
 **Experimental Setup:**
 *   **Problems**: 2 Standard AIMO-style problems.
@@ -185,7 +185,7 @@ To test the hypothesis that "correct reasoning paths exhibit lower geometric ent
 
 **Raw Data:**
 
-| Problem ID | Path Type | Is Correct | Z-Score (Lower is Smoother) |
+| Problem ID | Path Type | Is Correct | H-Score (Lower is Smoother) |
 | :--- | :--- | :--- | :--- |
 | EXP_001 | Path A (Systematic) | **True** | 0.001819 |
 | EXP_001 | Path B (Double Counting) | False | 0.002401 |
@@ -195,13 +195,13 @@ To test the hypothesis that "correct reasoning paths exhibit lower geometric ent
 | EXP_002 | Path C (Wandering) | False | 0.001247 |
 
 **Statistical Summary:**
-*   **Mean Z (Correct)**: 0.001562 ($\sigma = 0.00036$)
-*   **Mean Z (Incorrect)**: 0.001592 ($\sigma = 0.00056$)
+*   **Mean H (Correct)**: 0.001562 ($\sigma = 0.00036$)
+*   **Mean H (Incorrect)**: 0.001592 ($\sigma = 0.00056$)
 *   **Delta**: $+3.0 \times 10^{-5}$ (Positive implies Correct paths are slightly smoother)
 
 **Interpretation & "Honest" Analysis:**
 1.  **Weak Correlation**: The global average supports the hypothesis (Correct < Incorrect), but the margin is thin.
-2.  **The "Confidently Wrong" Phenomenon**: In EXP_002, the "Sign Error" path had the *lowest* entropy (0.001207), beating the correct path. This indicates that the current Z-score implementation measures **internal coherence** rather than **external truth**. A logical fallacy that *flows* smoothly (e.g., a simple calculation error in a confident derivation) appears "low entropy".
+2.  **The "Confidently Wrong" Phenomenon**: In EXP_002, the "Sign Error" path had the *lowest* entropy (0.001207), beating the correct path. This indicates that the current H-score implementation measures **internal coherence** rather than **external truth**. A logical fallacy that *flows* smoothly (e.g., a simple calculation error in a confident derivation) appears "low entropy".
 3.  **The "High Entropy" of Confusion**: In EXP_001, the "Double Counting" error (Path B) had significantly higher entropy (0.0024), validating that structural confusion spikes the metric.
 4.  **Conclusion**: The Cognitive Holonomy is a **necessary but not sufficient** condition for truth. A high H-score reliably flags confusion, but a low H-score guarantees only consistency, not correctness. Future work must integrate "External Verification" (e.g., Lean 4) to differentiate between *coherent hallucinations* and *coherent truths*.
 

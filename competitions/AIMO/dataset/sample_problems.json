@@ -1,0 +1,16 @@
+[
+    {
+        "id": "test_001",
+        "problem": "Let n be an integer. Prove that if n is odd, then n^2 is odd.",
+        "type": "number_theory",
+        "difficulty": 1,
+        "formal_statement_template": "example (n : Int) (h : Odd n) : Odd (n^2) :="
+    },
+    {
+        "id": "test_002",
+        "problem": "Prove that for all real numbers x and y, if x + y > 10, then x > 5 or y > 5.",
+        "type": "logic",
+        "difficulty": 1,
+        "formal_statement_template": "example (x y : Real) (h : x + y > 10) : x > 5 \\/ y > 5 :="
+    }
+]

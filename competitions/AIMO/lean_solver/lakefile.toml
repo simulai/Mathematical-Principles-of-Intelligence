@@ -1,0 +1,14 @@
+name = "AimoSolver"
+version = "0.1.0"
+defaultTargets = ["aimosolver"]
+
+[[lean_lib]]
+name = "AimoSolver"
+
+[[lean_exe]]
+name = "aimosolver"
+root = "Main"
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"

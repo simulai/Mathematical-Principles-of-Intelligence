@@ -6,7 +6,7 @@ import os
 def sinkhorn_projection(matrix, iterations=10):
     """
     Simulates the core of mHC in the paper: projecting the matrix onto the doubly stochastic manifold (Birkhoff Polytope).
-    This can be seen as an operator to maintain the Zhang Invariant.
+    This can be seen as an operator to maintain the Cognitive Holonomy.
     """
     # Pre-processing: exp to ensure non-negative, similar to softmax logic in attention or gating
     M = np.exp(matrix) 
@@ -99,7 +99,7 @@ def main():
     ax.set_title("Cognitive Signal Stability: Manifold vs. Unconstrained Flow", fontsize=14)
     ax.set_xlabel("Layer Depth (Time)", fontsize=12)
     ax.set_ylabel("Signal Norm (Information Consistency)", fontsize=12)
-    ax.axhline(y=1.0, color='gray', linestyle='--', alpha=0.5, label="Ideal Stability (Zhang Invariant)")
+    ax.axhline(y=1.0, color='gray', linestyle='--', alpha=0.5, label="Ideal Stability (Cognitive Holonomy)")
     
     # Lines
     lines_unconstrained = []

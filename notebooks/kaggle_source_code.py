@@ -1,5 +1,5 @@
 # MPI Disaster Tweets Classification - Kaggle Source Code
-# Version: 1.1 (DistilBERT + SPHA + ZhangInvariant)
+# Version: 1.1 (DistilBERT + SPHA + CognitiveHolonomy)
 # Copy and paste this ENTIRE code into a single Code Cell in your Kaggle Notebook.
 
 import torch
@@ -12,9 +12,10 @@ from transformers import AutoTokenizer, AutoModel
 import os
 import math
 from tqdm.notebook import tqdm
+from sklearn.model_selection import StratifiedKFold
 
 # Check device
-print("MPI Version: 1.1 (DistilBERT + SPHA + ZhangInvariant) - Loaded Successfully")
+print("MPI Version: 1.1 (DistilBERT + SPHA + CognitiveHolonomy) - Loaded Successfully")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 
@@ -59,16 +60,16 @@ class SPHA(nn.Module):
         out = out.transpose(1, 2).contiguous().view(B, L, D)
         return self.out_proj(out)
 
-class ZhangInvariantLoss(nn.Module):
-    def __init__(self, lambda_z=0.1):
+class HolonomyLoss(nn.Module):
+    def __init__(self, lambda_h=0.1):
         super().__init__()
-        self.lambda_z = lambda_z
+        self.lambda_h = lambda_h
         
     def forward(self, hidden_states):
         # Penalize rapid metric changes (Ricci flow smoothing)
         diff = hidden_states[:, 1:, :] - hidden_states[:, :-1, :]
         loss = torch.mean(diff ** 2)
-        return self.lambda_z * loss
+        return self.lambda_h * loss
 
 # ==========================================
 # 2. Model Architecture
@@ -81,7 +82,7 @@ class MPIDisasterModel(nn.Module):
         self.hidden_dim = self.backbone.config.hidden_size
         self.mpi_block = SPHA(self.hidden_dim, num_heads=8, branching_factor=math.e)
         self.classifier = nn.Linear(self.hidden_dim, num_classes)
-        self.zhang_loss_fn = ZhangInvariantLoss(lambda_z=0.05)
+        self.holonomy_loss_fn = HolonomyLoss(lambda_h=0.05)
 
     def forward(self, input_ids, attention_mask, labels=None):
         outputs = self.backbone(input_ids=input_ids, attention_mask=attention_mask)
@@ -92,8 +93,8 @@ class MPIDisasterModel(nn.Module):
         loss = None
         if labels is not None:
             ce_loss = F.cross_entropy(logits, labels)
-            z_loss = self.zhang_loss_fn(mpi_out)
-            loss = ce_loss + z_loss
+            h_loss = self.holonomy_loss_fn(mpi_out)
+            loss = ce_loss + h_loss
         return logits, loss
 
 # ==========================================
@@ -101,8 +102,12 @@ class MPIDisasterModel(nn.Module):
 # ==========================================
 
 class TweetDataset(Dataset):
-    def __init__(self, csv_file, tokenizer, max_len=128, is_test=False):
-        self.df = pd.read_csv(csv_file)
+    def __init__(self, data, tokenizer, max_len=128, is_test=False):
+        if isinstance(data, str):
+            self.df = pd.read_csv(data)
+        else:
+            self.df = data.copy()
+            
         self.tokenizer = tokenizer
         self.max_len = max_len
         self.is_test = is_test
@@ -234,47 +239,81 @@ def main():
     print(f"Train file: {train_file}, Test file: {test_file}")
 
     if base_path and train_file:
-        train_dataset = TweetDataset(f"{base_path}/{train_file}", tokenizer)
-        test_dataset = TweetDataset(f"{base_path}/{test_file}", tokenizer, is_test=True)
+        # Load DataFrames
+        print(f"Loading datasets...")
+        train_df = pd.read_csv(f"{base_path}/{train_file}")
+        test_df = pd.read_csv(f"{base_path}/{test_file}")
+        
+        # Prepare 5-Fold CV
+        kf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        test_probs = np.zeros((len(test_df), 2))
+        
+        print(f"Starting 5-Fold Cross Validation...")
+        
+        # Ensure target column exists
+        if 'target' not in train_df.columns:
+            print("Warning: 'target' column missing in train file. Cannot train.")
+            return None, None
+            
+        targets = train_df['target'].values
+        
+        for fold, (train_idx, val_idx) in enumerate(kf.split(train_df, targets)):
+            print(f"\n=== Fold {fold+1}/5 ===")
+            
+            # Split data
+            train_fold = train_df.iloc[train_idx]
+            # val_fold = train_df.iloc[val_idx] 
+            
+            train_dataset = TweetDataset(train_fold, tokenizer)
+            train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+            
+            model = MPIDisasterModel().to(device)
+            optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)
+            
+            # Train (3 Epochs - Best setting)
+            for epoch in range(3):
+                loss = train(model, train_loader, optimizer)
+                print(f"  Epoch {epoch+1}, Loss: {loss:.4f}")
+            
+            # Predict on Test Set
+            print("  Generating fold predictions...")
+            model.eval()
+            
+            test_dataset = TweetDataset(test_df, tokenizer, is_test=True)
+            test_loader = DataLoader(test_dataset, batch_size=32)
+            
+            fold_probs = []
+            with torch.no_grad():
+                for batch in tqdm(test_loader, desc=f'Fold {fold+1} Prediction', leave=False):
+                    input_ids = batch['input_ids'].to(device)
+                    mask = batch['attention_mask'].to(device)
+                    logits, _ = model(input_ids, mask)
+                    probs = F.softmax(logits, dim=1)
+                    fold_probs.extend(probs.cpu().numpy())
+                    
+            test_probs += np.array(fold_probs)
+            
+            # Cleanup to save memory
+            del model, optimizer, train_dataset, train_loader
+            torch.cuda.empty_cache()
 
-        train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-        test_loader = DataLoader(test_dataset, batch_size=32)
+        # Average predictions
+        test_probs /= 5
+        final_preds = np.argmax(test_probs, axis=1)
 
-        model = MPIDisasterModel().to(device)
-        optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)
-
-        print("Starting training...")
-        for epoch in range(3):
-            loss = train(model, train_loader, optimizer)
-            print(f"Epoch {epoch+1}, Loss: {loss:.4f}")
-
-        # ==========================================
-        # 4. Inference & Submission
-        # ==========================================
-        print("Generating predictions...")
-        model.eval()
-        preds = []
-        with torch.no_grad():
-            for batch in tqdm(test_loader, desc='Predicting'):
-                input_ids = batch['input_ids'].to(device)
-                mask = batch['attention_mask'].to(device)
-                logits, _ = model(input_ids, mask)
-                preds.extend(torch.argmax(logits, dim=1).cpu().numpy())
-
-        # Load original test file to get IDs, even if using preprocessed for input
-        # We need 'id' column from the file we used for prediction
+        # Load original test file to get IDs
         sub_df = pd.read_csv(f"{base_path}/{test_file}")
         
-        # Ensure 'id' column exists, otherwise create dummy index
+        # Ensure 'id' column exists
         if 'id' not in sub_df.columns:
              sub_df['id'] = sub_df.index
              
-        sub_df['target'] = preds
+        sub_df['target'] = final_preds
         submission = sub_df[['id', 'target']]
         submission.to_csv("submission.csv", index=False)
         print("Submission saved to submission.csv!")
         
-        return model, submission
+        return None, submission
     else:
         print("Error: Dataset not found. Please add 'nlp-getting-started' dataset to your Kaggle Notebook.")
         return None, None

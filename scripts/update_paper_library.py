@@ -8,7 +8,7 @@ KEYWORDS = [
     "Mixture of Experts", 
     "MoE", 
     "Manifold", 
-    "Zhang Invariant", 
+    "Cognitive Holonomy", 
     "Sinkhorn", 
     "DeepSeek", 
     "MPI"

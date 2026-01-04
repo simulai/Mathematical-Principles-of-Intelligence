@@ -29,7 +29,7 @@ The default competition data (`train.csv`, `test.csv`) is usually added automati
 2. Click **Run All** or execute the cell.
 3. The script will:
    - Automatically detect your data files (even if named `text_clean` or `text_cleaned`).
-   - Train the DistilBERT + SPHA + ZhangInvariant model.
+   - Train the DistilBERT + SPHA + CognitiveHolonomy model.
    - Generate `submission.csv`.
 
 ### Step 5: Submit Predictions
@@ -44,7 +44,7 @@ The default competition data (`train.csv`, `test.csv`) is usually added automati
 ### Suggested Submission Descriptions
 
 **Option 1: Professional (Recommended)**
-> DistilBERT + MPI Architecture (SPHA Attention + Zhang Invariant Loss). Implements e-base scaling law (b=e) for optimal information flow.
+> DistilBERT + MPI Architecture (SPHA Attention + Cognitive Holonomy Loss). Implements e-base scaling law (b=e) for optimal information flow.
 
 **Option 2: Short**
 > MPI-DistilBERT with SPHA and Ricci Flow Regularization.
@@ -52,7 +52,7 @@ The default competition data (`train.csv`, `test.csv`) is usually added automati
 **Option 3: Detailed**
 > Backbone: DistilBERT-base-uncased. 
 > Head: Softmax-Projected Hyper-Attention (SPHA) with num_heads=8, branching_factor=e. 
-> Loss: CrossEntropy + Zhang Invariant (lambda=0.05) for topological smoothing.
+> Loss: CrossEntropy + Cognitive Holonomy (lambda=0.05) for topological smoothing.
 
 **Option B: Save & Commit (Standard)**
 1. Click the **Save Version** button in the top right corner.
@@ -71,7 +71,7 @@ The code uses a specialized architecture designed for efficient attention:
   - **Heads**: 8
   - **Branching Factor**: $e$ (approx 2.718)
   - **Scaling**: $\frac{\ln(b)}{b}$ based on E-Base Scaling Law.
-- **Regularization**: **Zhang Invariant Loss** ($\lambda_z=0.05$) to ensure smooth metric evolution (Ricci flow inspired).
+- **Regularization**: **Cognitive Holonomy Loss** ($\lambda_h=0.05$) to ensure smooth metric evolution (Ricci flow inspired).
 
 ## 3. Troubleshooting
 

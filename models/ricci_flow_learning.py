@@ -87,7 +87,7 @@ class CognitiveAgent:
             
             self.W = alpha * W_projected + (1 - alpha) * self.W
             
-            # Measure how far we are from the manifold (Zhang Invariant Violation)
+            # Measure how far we are from the manifold (Cognitive Holonomy Violation)
             norm_deviation = np.linalg.norm(self.W - W_projected)
 
         self.loss_history.append(loss)
@@ -152,7 +152,7 @@ def run_experiment():
     ax_norm.fill_between(range(steps), norms_mpi, color='orange', alpha=0.3)
     ax_norm.axvline(x=50, color='black', linestyle=':', alpha=0.5)
     ax_norm.set_title('Cognitive Temperature (Manifold Deviation)')
-    ax_norm.set_ylabel(r'Zhang Invariant Violation ($\Delta \mathcal{Z}$)')
+    ax_norm.set_ylabel(r'Cognitive Holonomy Violation ($\Delta \mathcal{H}$)')
     ax_norm.set_xlabel('Time Steps')
     ax_norm.text(10, 0.05, 'Stable Phase\n(Low Entropy)', ha='center')
     ax_norm.text(60, 0.05, 'Phase Transition\n(High Entropy/Insight)', ha='center')

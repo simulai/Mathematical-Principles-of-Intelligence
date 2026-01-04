@@ -6,7 +6,7 @@ def submit_to_kaggle():
     # Configuration
     COMPETITION = "nlp-getting-started"
     SUBMISSION_FILE = "submission.csv"
-    MESSAGE = "MPI SPHA + Zhang Invariant (Automated Submission)"
+    MESSAGE = "MPI SPHA + Cognitive Holonomy (Automated Submission)"
 
     # Check if file exists
     if not os.path.exists(SUBMISSION_FILE):

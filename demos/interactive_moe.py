@@ -176,7 +176,7 @@ def interactive_demo():
         print(f"     -> Experts Used (Histogram):   {expert_usage_mpi.int().tolist()}")
         
         if batch_entropy_mpi > batch_entropy_base:
-            print(f"   ✨ MPI Win: Better Load Balancing (Zhang Invariant)!")
+            print(f"   ✨ MPI Win: Better Load Balancing (Cognitive Holonomy)!")
         elif token_entropy_mpi < token_entropy_base:
              print(f"   ✨ MPI Win: Higher Confidence!")
         else:

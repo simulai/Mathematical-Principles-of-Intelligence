@@ -26,7 +26,7 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo 3. Running Model Training (SPHA + Zhang Invariant)...
+echo 3. Running Model Training (SPHA + Cognitive Holonomy)...
 echo This will use real data if available, otherwise dummy data.
 echo [INFO] Running in FAST DEMO mode (50 samples) because CPU is detected.
 python models/kaggle_disaster_tweets_mpi.py --demo

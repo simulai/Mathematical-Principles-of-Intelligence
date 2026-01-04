@@ -1,3 +1,20 @@
+"""
+Cognitive Holonomy (H) - Geometric Simulation
+------------------------------------------
+This script visualizes the concept of "Holonomy" on a sphere, which serves as the 
+theoretical basis for the "Cognitive Holonomy" in our cognitive architecture.
+
+DISCLAIMER:
+The "Cognitive Holonomy" is a project-specific term used to describe the geometric goal 
+of minimizing logical curvature (holonomy) in reasoning paths. In our neural network 
+implementations (e.g., HolonomyLoss), we approximate this via first-order 
+difference regularization (L2 smoothing), which corresponds to finding geodesics 
+in a locally Euclidean embedding.
+
+This simulation demonstrates the exact geometric phenomenon: parallel transport 
+around a closed loop resulting in vector rotation (non-zero holonomy).
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -115,7 +132,7 @@ def main():
     ax.text(0, 1.1, 0, "B", color='k')
     ax.text(0, 0, 1.1, "C", color='k')
     
-    ax.set_title("Zhang Invariant Simulation: Holonomy on a Sphere\nCognitive Manifold Curvature", fontsize=14)
+    ax.set_title("Cognitive Holonomy Simulation: Holonomy on a Sphere\nCognitive Manifold Curvature", fontsize=14)
     ax.set_xlabel("X")
     ax.set_ylabel("Y")
     ax.set_zlabel("Z")
@@ -127,10 +144,10 @@ def main():
     green_patch = mpatches.Patch(color='green', label='Start Vector')
     plt.legend(handles=[green_patch, red_patch])
     
-    output_path = 'zhang_invariant_simulation.png'
+    output_path = 'cognitive_holonomy_simulation.png'
     plt.savefig(output_path)
     print(f"Plot saved to {output_path}")
-    print("Zhang Invariant (Holonomy) detected: Vector rotated by 90 degrees.")
+    print("Cognitive Holonomy detected: Vector rotated by 90 degrees.")
     print("This represents 'Confusion' or energy dissipation in the cognitive loop.")
     print("In a 'Superconductive' (Flat) Cognitive Manifold, the vector would return unchanged.")
     # plt.show()

@@ -7,6 +7,8 @@ import numpy as np
 from transformers import AutoTokenizer, AutoModel
 import os
 import math
+from sklearn.model_selection import StratifiedKFold
+from tqdm import tqdm
 
 # ==========================================
 # Core Theory Implementations (MPI)
@@ -54,16 +56,16 @@ class SPHA(nn.Module):
         out = out.transpose(1, 2).contiguous().view(B, L, D)
         return self.out_proj(out)
 
-class ZhangInvariantLoss(nn.Module):
+class HolonomyLoss(nn.Module):
     """
-    Computes the violation of the Zhang Invariant (Z).
-    Z = curl(A) = 0 for optimal flow.
+    Computes the violation of the Cognitive Holonomy (H).
+    H = 0 for optimal flow.
     Approximated by the commutativity of the flow field gradients or 
     cyclic consistency loss.
     """
-    def __init__(self, lambda_z=0.1):
+    def __init__(self, lambda_h=0.1):
         super().__init__()
-        self.lambda_z = lambda_z
+        self.lambda_h = lambda_h
         
     def forward(self, hidden_states):
         """
@@ -76,7 +78,7 @@ class ZhangInvariantLoss(nn.Module):
         # In a real manifold setting, this would be a curvature calculation.
         diff = hidden_states[:, 1:, :] - hidden_states[:, :-1, :]
         loss = torch.mean(diff ** 2)
-        return self.lambda_z * loss
+        return self.lambda_h * loss
 
 class MPIDisasterModel(nn.Module):
     def __init__(self, model_name="distilbert-base-uncased", num_classes=2):
@@ -87,7 +89,7 @@ class MPIDisasterModel(nn.Module):
         # Replace the last layer or add an MPI block
         self.mpi_block = SPHA(self.hidden_dim, num_heads=8, branching_factor=math.e)
         self.classifier = nn.Linear(self.hidden_dim, num_classes)
-        self.zhang_loss_fn = ZhangInvariantLoss(lambda_z=0.05)
+        self.holonomy_loss_fn = HolonomyLoss(lambda_h=0.05)
 
     def forward(self, input_ids, attention_mask, labels=None):
         outputs = self.backbone(input_ids=input_ids, attention_mask=attention_mask)
@@ -103,8 +105,8 @@ class MPIDisasterModel(nn.Module):
         loss = None
         if labels is not None:
             ce_loss = F.cross_entropy(logits, labels)
-            z_loss = self.zhang_loss_fn(mpi_out)
-            loss = ce_loss + z_loss
+            h_loss = self.holonomy_loss_fn(mpi_out)
+            loss = ce_loss + h_loss
             
         return logits, loss
 
@@ -113,8 +115,12 @@ class MPIDisasterModel(nn.Module):
 # ==========================================
 
 class TweetDataset(Dataset):
-    def __init__(self, csv_file, tokenizer, max_len=128, is_test=False):
-        self.df = pd.read_csv(csv_file)
+    def __init__(self, data, tokenizer, max_len=128, is_test=False):
+        if isinstance(data, str):
+            self.df = pd.read_csv(data)
+        else:
+            self.df = data.copy()
+            
         self.tokenizer = tokenizer
         self.max_len = max_len
         self.is_test = is_test
@@ -238,7 +244,7 @@ def main():
     
     # Train
     print("Starting MPI-Enhanced Training...")
-    for epoch in range(2): # Short training for demo
+    for epoch in range(3): 
         loss = train(model, train_loader, optimizer, device)
         print(f"Epoch {epoch+1}, Loss: {loss:.4f}")
         
