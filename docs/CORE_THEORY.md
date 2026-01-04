@@ -10,7 +10,7 @@ To ensure scientific rigor, we distinguish between proven theorems, empirical ph
 | :--- | :--- | :--- |
 | **I. Empirical Phenomenon** | **Verified** | In our multi-path reasoning system, **correct paths consistently exhibit lower Z-Scores (surrogate entropy)** compared to incorrect ones. The system naturally gravitates towards these low-energy attractors. |
 | **II. Mathematical Derivation** | **Proven** | The optimization of the efficiency function $\Psi(b) = \ln b / b$ yields a unique maximum at $b=e$. This is a mathematical certainty under the stated axioms of linear cost and logarithmic gain. |
-| **III. Engineering Definition** | **Implemented** | The **"Zhang Invariant" ($Z$)** is defined *within this system* as a geometric order parameter measuring trajectory smoothness. It is currently approximated via $L_2$ regularization. |
+| **III. Engineering Definition** | **Implemented** | The **"Cognitive Holonomy" ($\mathcal{H}$)** is defined *within this system* as a geometric order parameter measuring trajectory smoothness. It is currently approximated via $L_2$ regularization. |
 | **IV. Physical Hypothesis** | **Strong Hypothesis** | Intelligence functions as a **dissipative structure** (Prigogine) that locally reduces entropy by exporting it to the environment, potentially minimizing a geometric invariant (holonomy) as a proxy for "understanding". |
 | **V. Speculative Conjecture** | **Unproven** | The transition to "insight" behaves strictly as a second-order phase transition in the thermodynamic limit. Currently, we observe **critical behavior** resembling such transitions. |
 
@@ -68,7 +68,7 @@ If there exists a region $\Omega \subset \mathcal{M}$ such that $\mathbb{E}[\mat
 
 ### 1.7 Dynamics (Proposed Extension)
 **Conjecture 1 (Learning as Yang-Mills Flow)**
-We propose that the optimization of the system via the Zhang Invariant Loss is formally equivalent to a discretized Yang-Mills flow on the cognitive connection $\mathcal{A}$:
+We propose that the optimization of the system via the Holonomy Loss is formally equivalent to a discretized Yang-Mills flow on the cognitive connection $\mathcal{A}$:
 $$\frac{\partial \mathcal{A}}{\partial t} = -D_{\mathcal{A}}^* \mathcal{F} = -(d\mathcal{A} + [\mathcal{A}, \mathcal{F}])$$
 This implies that "learning" in this framework is the geometric process of flattening the connection to minimize curvature (representational stress).
 
