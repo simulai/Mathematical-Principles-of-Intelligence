@@ -7,9 +7,9 @@ theoretical basis for the "Cognitive Holonomy" (formerly Zhang Invariant) in our
 DISCLAIMER:
 The "Cognitive Holonomy" is a project-specific term used to describe the geometric goal 
 of minimizing logical curvature (holonomy) in reasoning paths. In our neural network 
-implementations (e.g., HolonomyLoss), we approximate this via first-order 
-difference regularization (L2 smoothing), which corresponds to finding geodesics 
-in a locally Euclidean embedding.
+implementations (e.g., HolonomyLoss), we approximate this via **Discrete Geodesic Curvature**,
+minimizing the angle between consecutive semantic velocity vectors to approximate 
+parallel transport.
 
 This simulation demonstrates the exact geometric phenomenon: parallel transport 
 around a closed loop resulting in vector rotation (non-zero holonomy).

@@ -60,6 +60,6 @@ python reasoning_agent.py
 
 - [x] **Phase 1**: Setup Lean 4 environment and "Hello World" proof.
 - [x] **Phase 2**: Implement "Autoformalization" (Natural Language -> Lean 4) using DeepSeek.
-- [x] **Phase 3**: Integrate MPI metrics (Zhang Invariant) to select best reasoning paths.
+- [x] **Phase 3**: Integrate MPI metrics (Cognitive Holonomy) to select best reasoning paths.
 - [ ] **Phase 4**: Full loop verification (Automated Lean Compilation).
 - [ ] **Phase 5**: Scale up to AIME 2024 problems.

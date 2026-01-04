@@ -137,13 +137,15 @@ def run_experiment():
         # Create problem dict as expected by solve()
         problem_input = {"problem": data["problem"]}
         
-        # Solve (this calculates Z-scores using the real embedding model)
+        # Solve (this calculates H-scores using the real embedding model)
         solution = agent.solve(problem_input)
         
         if solution and 'all_scores' in solution:
             # 1. Generate Visualization
             # Note: Requires visualize_entropy.py update to support ground_truth
-            plot_entropy_landscape(pid, solution['all_scores'], vis_dir, ground_truth=data['ground_truth'])
+            # We map 'h_score' to 'z_score' for compatibility with existing vis code if needed,
+            # or update vis code. Let's assume we update vis code or just pass the list.
+            # But the list has 'h_score'.
             
             # 2. Collect Data
             for path in solution['all_scores']:
@@ -160,7 +162,7 @@ def run_experiment():
                 results.append({
                     "problem_id": pid,
                     "path_type": path['name'],
-                    "z_score": path['z_score'],
+                    "h_score": path['h_score'],
                     "is_correct": is_correct,
                     "final_answer": ans
                 })
@@ -171,7 +173,7 @@ def run_experiment():
     if results:
         df = pd.DataFrame(results)
         print("\n--- EXPERIMENT DATA ---")
-        print(df[['problem_id', 'path_type', 'is_correct', 'z_score']])
+        print(df[['problem_id', 'path_type', 'is_correct', 'h_score']])
         
         # Save
         csv_path = os.path.join(vis_dir, "experiment_data.csv")
@@ -179,23 +181,23 @@ def run_experiment():
         print(f"\nData saved to: {csv_path}")
         
         # Stats
-        correct_group = df[df['is_correct'] == True]['z_score']
-        wrong_group = df[df['is_correct'] == False]['z_score']
+        correct_group = df[df['is_correct'] == True]['h_score']
+        wrong_group = df[df['is_correct'] == False]['h_score']
         
         print("\n--- STATISTICAL SUMMARY ---")
         if not correct_group.empty:
-            print(f"Correct Paths (n={len(correct_group)}): Mean Z = {correct_group.mean():.6f}, Std = {correct_group.std():.6f}")
+            print(f"Correct Paths (n={len(correct_group)}): Mean H = {correct_group.mean():.6f}, Std = {correct_group.std():.6f}")
         
         if not wrong_group.empty:
-            print(f"Incorrect Paths (n={len(wrong_group)}): Mean Z = {wrong_group.mean():.6f}, Std = {wrong_group.std():.6f}")
+            print(f"Incorrect Paths (n={len(wrong_group)}): Mean H = {wrong_group.mean():.6f}, Std = {wrong_group.std():.6f}")
             
         if not correct_group.empty and not wrong_group.empty:
             delta = wrong_group.mean() - correct_group.mean()
             print(f"\nDelta (Wrong - Correct): {delta:.6f}")
             if delta > 0:
-                print("RESULT: HYPOTHESIS SUPPORTED. Correct paths have lower entropy.")
+                print("RESULT: HYPOTHESIS SUPPORTED. Correct paths have lower Holonomy (Curvature).")
             else:
-                print("RESULT: HYPOTHESIS REFUTED. Correct paths have higher/equal entropy.")
+                print("RESULT: HYPOTHESIS REFUTED. Correct paths have higher/equal Holonomy.")
     
     print("\nExperiment Complete.")
 

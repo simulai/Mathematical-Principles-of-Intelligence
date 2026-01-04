@@ -21,9 +21,17 @@ load_dotenv()
 class HolonomyLoss(nn.Module):
     """
     Computes the Cognitive Holonomy (H).
-    H = || P_loop - I || = 0 for path independence.
-    Approximated by the commutativity of the flow field gradients or 
-    cyclic consistency loss.
+    
+    Theoretical Definition:
+    H(gamma) = || P_gamma - I ||
+    The deviation of the parallel transport along the reasoning path from the identity.
+    
+    Geometric Implementation (Discrete Curvature):
+    We model the optimal reasoning path as a geodesic on the cognitive manifold.
+    The Holonomy is measured as the "Geodesic Curvature" (covariant acceleration),
+    approximated by the sine of the angle between consecutive reasoning steps.
+    
+    L_H = Sum || v_t x v_{t+1} ||  (Area of the path deviation)
     """
     def __init__(self, lambda_h=0.1):
         super().__init__()
@@ -32,18 +40,45 @@ class HolonomyLoss(nn.Module):
     def forward(self, hidden_states, return_per_step=False):
         """
         hidden_states: [Batch, Length, Dim]
-        We approximate holonomy by checking if the transformation preserves 
-        local geometric structure (isometric constraint).
         """
-        # Simple approximation: penalize rapid changes in metric (Ricci flow smoothing)
-        # || h_t - h_{t-1} ||^2 
-        diff = hidden_states[:, 1:, :] - hidden_states[:, :-1, :]
-        if return_per_step:
-            # Return the raw squared differences for each step transition
-            # Shape: [Batch, Length-1]
-            return torch.mean(diff ** 2, dim=-1)
+        # 1. Compute Tangent Vectors (Velocity)
+        # v_t = x_{t+1} - x_t
+        velocity = hidden_states[:, 1:, :] - hidden_states[:, :-1, :]
         
-        loss = torch.mean(diff ** 2)
+        # Normalize velocity to focus on Direction (Geometry) rather than Speed (Energy)
+        # Add epsilon to avoid division by zero
+        v_norm = torch.norm(velocity, dim=-1, keepdim=True) + 1e-8
+        v_dir = velocity / v_norm
+        
+        # 2. Compute Discrete Curvature (Angle between consecutive steps)
+        # We want v_t and v_{t+1} to be collinear (Geodesic)
+        # Cosine similarity: (v_t . v_{t+1})
+        if v_dir.shape[1] < 2:
+            # Not enough steps to measure curvature, fallback to simple energy (smoothness)
+            return torch.mean(velocity ** 2) * self.lambda_h
+            
+        v_t = v_dir[:, :-1, :]
+        v_next = v_dir[:, 1:, :]
+        
+        # Cosine similarity
+        cosine_sim = torch.sum(v_t * v_next, dim=-1)
+        
+        # Curvature Loss = 1 - Cosine (Penalize turning)
+        # Range: [0, 2]. 0 means straight line, 2 means U-turn.
+        curvature = 1.0 - cosine_sim
+        
+        if return_per_step:
+            # curvature shape: [Batch, Length-2]
+            # We pad with zeros at start and end to match original length [Batch, Length]
+            # giving a "curvature" score to each node (0 for endpoints)
+            pad_start = torch.zeros(curvature.shape[0], 1).to(curvature.device)
+            pad_end = torch.zeros(curvature.shape[0], 1).to(curvature.device)
+            # Result: [Batch, Length]
+            return torch.cat([pad_start, curvature, pad_end], dim=1)
+        
+        # Total Holonomy is the integral of curvature along the path
+        loss = torch.mean(curvature)
+        
         return self.lambda_h * loss
 
 class MPIReasoningAgent:
