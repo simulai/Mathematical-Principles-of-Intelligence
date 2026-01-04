@@ -55,3 +55,8 @@ build/
 data/
 submission.csv
 *.csv
+
+# Competition Secrets (Do Not Commit)
+competitions/AIMO3/
+competitions/AIMO/
+checkpoints/
