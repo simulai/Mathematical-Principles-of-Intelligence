@@ -9,8 +9,67 @@ import torch.nn as nn
 from typing import List, Dict, Optional, Any
 
 # ==========================================
-# 1. Cognitive Holonomy Loss (Geometric Core)
+# 1. Cognitive Holonomy & Symplectic Dynamics
 # ==========================================
+
+class FourierHolonomyLayer(nn.Module):
+    """
+    Implements the "Cognitive Spectrum" hypothesis:
+    Projecting reasoning states into a Fourier basis allows the system to 
+    filter high-frequency "noise" (hallucinations) and retain low-frequency "truth" (axioms).
+    """
+    def __init__(self, dim, num_features):
+        super().__init__()
+        self.dim = dim
+        self.num_features = num_features
+        # Fourier Feature Projection: Maps input to high-dimensional frequency space
+        # Fixed random weights (Gaussian) - similar to Positional Encoding but learnable scale if needed
+        self.b = nn.Parameter(torch.randn(num_features, dim) * 10.0, requires_grad=False)
+        self.linear = nn.Linear(num_features * 2, dim) # Mix sin and cos components
+        
+    def forward(self, x):
+        """
+        x: [Batch, Length, Dim]
+        """
+        # Project to frequency space: x @ b.T
+        proj = torch.matmul(x, self.b.t()) # [Batch, Length, NumFeatures]
+        
+        # Fourier Basis: [sin(proj), cos(proj)]
+        f_feat = torch.cat([torch.sin(proj), torch.cos(proj)], dim=-1) # [Batch, Length, NumFeatures*2]
+        
+        # Project back to manifold dimension
+        x_f = self.linear(f_feat)
+        
+        # Residual connection (optional, but helps preserve gradient)
+        return x + x_f
+
+class StochasticSymplecticDynamics(nn.Module):
+    """
+    Implements "Fantasy with Constraints" (Stochastic Symplectic Dynamics).
+    
+    1. Fantasy (Noise Injection): Allows the system to explore off-manifold paths (Creativity).
+    2. Constraint (Holonomic Pullback): Forces the path to return to a consistent logical flow.
+    """
+    def __init__(self, dim, noise_scale=0.1):
+        super().__init__()
+        self.dim = dim
+        self.noise_scale = noise_scale
+        self.holonomy_loss = HolonomyLoss()
+        
+    def forward(self, hidden_states):
+        """
+        hidden_states: [Batch, Length, Dim]
+        """
+        # 1. Inject Fantasy (Gaussian Noise)
+        noise = torch.randn_like(hidden_states) * self.noise_scale
+        fantasy_states = hidden_states + noise
+        
+        # 2. Compute Holonomy of the Fantasy Path
+        # If the fantasy is "wild" (hallucination), Holonomy will be high.
+        # If the fantasy is "insightful" (consistent), Holonomy will be low.
+        h_score = self.holonomy_loss(fantasy_states)
+        
+        return fantasy_states, h_score
 
 class HolonomyLoss(nn.Module):
     """
@@ -97,6 +156,11 @@ class MPIReasoningAgent:
         
         # Initialize Cognitive Holonomy Loss
         self.holonomy_loss = HolonomyLoss(lambda_h=0.05)
+
+        # Initialize Cognitive Spectrum (Fourier) & Fantasy (Symplectic) layers
+        # Assuming embedding dim is 768 (DistilBERT)
+        self.fourier_layer = FourierHolonomyLayer(dim=768, num_features=256)
+        self.symplectic_dynamics = StochasticSymplecticDynamics(dim=768, noise_scale=0.05)
         
         # Initialize Embedding Model (Local) for MPI calculation
         print(f"Loading embedding model: {embedding_model}...")
@@ -147,17 +211,26 @@ class MPIReasoningAgent:
                 continue
                 
             # Get real embeddings for the reasoning steps
-            embeddings = self.get_embeddings(cand['steps'])
+            embeddings = self.get_embeddings(cand['steps']) # [1, Length, Dim]
             
-            # Calculate Cognitive Holonomy Loss (lower is better, means more coherent flow)
-            h_score = self.holonomy_loss(embeddings).item()
+            # --- Apply Cognitive Spectrum (Fourier Filter) ---
+            # Project to "Truth Spectrum" to filter high-frequency noise
+            embeddings_f = self.fourier_layer(embeddings)
             
-            # Get per-step entropy
-            step_entropy = self.holonomy_loss(embeddings, return_per_step=True).squeeze().tolist()
+            # --- Apply Stochastic Symplectic Dynamics (Fantasy) ---
+            # Inject noise and measure if the system can "pull back" to logic
+            fantasy_embeddings, fantasy_h_score = self.symplectic_dynamics(embeddings_f)
+            
+            # Calculate Cognitive Holonomy Loss on the FANTASY path
+            # This measures: "Is the creative variation of this thought still logical?"
+            h_score = fantasy_h_score.item()
+            
+            # Get per-step entropy (using the filtered embeddings for precision)
+            step_entropy = self.holonomy_loss(embeddings_f, return_per_step=True).squeeze().tolist()
             if isinstance(step_entropy, float):
                 step_entropy = [step_entropy]
                 
-            print(f"  Candidate: {cand['name']} | H-Score: {h_score:.4f}")
+            print(f"  Candidate: {cand['name']} | H-Score (Fantasy): {h_score:.4f}")
             
             candidate_scores.append({
                 "name": cand['name'],
