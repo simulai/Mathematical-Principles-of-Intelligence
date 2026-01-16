@@ -230,10 +230,7 @@ This experiment confirms the **"Vice-is-Virtue" Principle**. The "defects" of th
 To test the hypothesis that "correct reasoning paths exhibit lower geometric entropy (H-score)", we conducted a controlled experiment (`run_entropy_experiment.py`) using pre-defined reasoning trajectories.
 **Update:** We replaced the naive $L_2$ smoothness metric with the **Discrete Geodesic Curvature** (Definition 7).
 
-**Experimental Setup:**
-*   **Problems**: 2 Standard AIMO-style problems.
-*   **Paths**: 3 paths per problem (1 Correct, 2 Incorrect).
-*   **Metric**: Cognitive Holonomy (H-Score) calculated via DistilBERT embeddings and Cosine Curvature.
+
 
 **Raw Data:**
 
@@ -483,22 +480,6 @@ We conjecture that the emergence of general intelligence is tied to the discover
 To test the hypothesis that "correct reasoning paths exhibit lower geometric entropy (H-score)", we conducted a controlled experiment (`run_entropy_experiment.py`) using pre-defined reasoning trajectories.
 **Update:** We replaced the naive $L_2$ smoothness metric with the **Discrete Geodesic Curvature** (Definition 7).
 
-**Experimental Setup:**
-*   **Problems**: 2 Standard AIMO-style problems.
-*   **Paths**: 3 paths per problem (1 Correct, 2 Incorrect).
-*   **Metric**: Cognitive Holonomy (H-Score) calculated via DistilBERT embeddings and Cosine Curvature.
-
-**Raw Data:**
-
-| Problem ID | Path Type | Is Correct | H-Score (Curvature) | Improvement vs Old Metric |
-| :--- | :--- | :--- | :--- | :--- |
-| EXP_001 | Path A (Systematic) | **True** | **0.0607** | **Best Score (Lowest)** |
-| EXP_001 | Path B (Double Counting) | False | 0.0853 | Correctly penalized |
-| EXP_001 | Path C (Confused) | False | 0.0731 | Correctly penalized |
-| EXP_002 | Path A (Direct) | **True** | **0.0689** | **Best Score (Lowest)** |
-| EXP_002 | Path B (Sign Error) | False | 0.0722 | **Fixed:** Now worse than Correct |
-| EXP_002 | Path C (Wandering) | False | 0.0705 | Correctly penalized |
-
 **Statistical Summary:**
 *   **Mean H (Correct)**: 0.0648
 *   **Mean H (Incorrect)**: 0.0753
@@ -545,4 +526,5 @@ This mechanism explains why highly intelligent systems can "dream" (generate nov
 ## 7. References
 1.  Sterling, P., & Laughlin, S. (2015). *Principles of Neural Design*. MIT Press.
 2.  Niven, J. E., Anderson, J. C., & Laughlin, S. B. (2007). Energy-information trade-offs optimize the dynamic range of photoreceptor cells. *Neuron*, 53(1), 321-328.
+
 3.  Zhang, J. (2025). *The Mathematical Principles of Intelligence*. arXiv preprint.
